@@ -42,7 +42,7 @@ jobs:
           tagName: ${{ github.ref_name }}
           releaseName: "Salary Widget ${{ github.ref_name }}"
           releaseBody: "详情请查看 [CHANGELOG.md](https://github.com/xiaodust/salary-widget/blob/main/CHANGELOG.md)。"
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
           args: "--bundles nsis"
 
