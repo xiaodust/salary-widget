@@ -2,7 +2,7 @@
 
 一个轻量级 Windows 桌面薪资实时显示挂件。设置月薪、日薪或时薪与上下班时间后，它会在桌面实时显示当前时间、工作状态和“此刻已经赚了多少钱”。
 
-![app-icon](./app-icon.png)
+<img src="./app-icon.png" width="128" height="128" alt="Salary Widget" />
 
 [![GitHub release](https://img.shields.io/github/v/release/xiaodust/salary-widget?label=Latest%20Release)](https://github.com/xiaodust/salary-widget/releases/latest)
 [![License](https://img.shields.io/github/license/xiaodust/salary-widget)](./LICENSE)

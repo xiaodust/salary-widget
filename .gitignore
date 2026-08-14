@@ -31,3 +31,6 @@ release/
 *.msi
 *.zip
 *.tar.gz
+
+# Required WebView2 loader shipped inside the Tauri bundle
+!src-tauri/resources/WebView2Loader.dll
