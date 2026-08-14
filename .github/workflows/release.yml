@@ -1,0 +1,64 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build installer
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Salary Widget ${{ github.ref_name }}"
+          releaseBody: "详情请查看 [CHANGELOG.md](https://github.com/xiaodust/salary-widget/blob/main/CHANGELOG.md)。"
+          releaseDraft: true
+          prerelease: false
+          args: "--bundles nsis"
+
+      - name: Prepare portable archive
+        shell: pwsh
+        run: |
+          $releaseDir = "src-tauri/target/release"
+          $stage = "portable-stage"
+          New-Item -ItemType Directory -Force $stage | Out-Null
+          Copy-Item "$releaseDir/salary-widget.exe" "$stage/SalaryWidget.exe" -Force
+          Copy-Item "$releaseDir/WebView2Loader.dll" "$stage/WebView2Loader.dll" -Force
+          $zipName = "SalaryWidget_${{ github.ref_name }}_x64-portable.zip"
+          Compress-Archive -Path "$stage/*" -DestinationPath $zipName -Force
+          Write-Output "PORTABLE_ZIP=$zipName" >> $env:GITHUB_ENV
+
+      - name: Upload portable archive
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.ref_name }} $env:PORTABLE_ZIP --clobber

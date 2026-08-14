@@ -1,0 +1,33 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Frontend build
+dist/
+*.local
+.vite/
+
+# Rust / Tauri build
+src-tauri/target/
+src-tauri/gen/
+src-tauri/.cargo/
+
+# IDE and OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local build and release artifacts
+portable/
+installer/
+release/
+*.exe
+*.dll
+*.msi
+*.zip
+*.tar.gz
