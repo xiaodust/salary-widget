@@ -59,6 +59,7 @@ jobs:
           Write-Output "PORTABLE_ZIP=$zipName" >> $env:GITHUB_ENV
 
       - name: Upload portable archive
+        shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.ref_name }} $env:PORTABLE_ZIP --clobber
+        run: gh release upload "${{ github.ref_name }}" "$env:PORTABLE_ZIP" --clobber
